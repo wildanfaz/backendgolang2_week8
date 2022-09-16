@@ -29,14 +29,14 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, e
 	}
 
 	if err != nil {
-		result["http code status"] = status
+		result["http code"] = status
 		result["http description"] = desc
 		result["error"] = err.Error()
 		result["msg"] = msg
 		result["result"] = data
 	} else {
-		result["http status"] = status
-		result["response description"] = desc
+		result["http code"] = status
+		result["http description"] = desc
 		result["error"] = err
 		result["msg"] = msg
 		result["result"] = data
