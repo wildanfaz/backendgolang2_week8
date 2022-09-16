@@ -11,7 +11,7 @@ type UsersRepo interface {
 	SaveUser(data *models.User) (*models.User, error)
 	ChangeUser(r *http.Request, data *models.User) (*models.User, error)
 	RemoveUser(r *http.Request, data *models.User) (*models.User, error)
-	SearchByName(r *http.Request) (*models.Users, error)
+	FindUser(r *http.Request) (*models.Users, error)
 }
 
 type UsersService interface {

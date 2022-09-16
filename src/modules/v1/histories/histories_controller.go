@@ -76,3 +76,15 @@ func (re *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request) 
 
 	json.NewEncoder(w).Encode(data)
 }
+
+func (re *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	data, err := re.svc.SearchHistory(r)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	json.NewEncoder(w).Encode(data)
+}

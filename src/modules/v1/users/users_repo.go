@@ -63,7 +63,7 @@ func (re *users_repo) RemoveUser(r *http.Request, data *models.User) (*models.Us
 	return data, nil
 }
 
-func (re *users_repo) SearchByName(r *http.Request) (*models.Users, error) {
+func (re *users_repo) FindUser(r *http.Request) (*models.Users, error) {
 	var data models.Users
 
 	search := r.URL.Query().Get("name")

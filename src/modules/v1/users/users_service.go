@@ -56,7 +56,7 @@ func (re *users_service) DeleteUser(r *http.Request, data *models.User) (*models
 }
 
 func (re *users_service) SearchUser(r *http.Request) (*models.Users, error) {
-	data, err := re.repo.SearchByName(r)
+	data, err := re.repo.FindUser(r)
 
 	if err != nil {
 		return nil, err

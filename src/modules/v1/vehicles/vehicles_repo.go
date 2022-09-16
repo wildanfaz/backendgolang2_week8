@@ -62,3 +62,17 @@ func (re *vehicles_repo) RemoveVehicle(r *http.Request, data *models.Vehicle) (*
 
 	return data, nil
 }
+
+func (re *vehicles_repo) FindVehicle(r *http.Request) (*models.Vehicles, error) {
+	var data models.Vehicles
+
+	search := r.URL.Query().Get("vehicle_name")
+	s := "%" + search + "%"
+	result := re.db.Where("vehicle_name LIKE ?", s).Find(&data)
+
+	if result.Error != nil {
+		return nil, errors.New("failed get users")
+	}
+
+	return &data, nil
+}

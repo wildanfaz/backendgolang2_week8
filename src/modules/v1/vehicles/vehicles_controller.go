@@ -76,3 +76,15 @@ func (re *vehicles_ctrl) DeleteVehicle(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(data)
 }
+
+func (re *vehicles_ctrl) SearchVehicle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	data, err := re.svc.SearchVehicle(r)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	json.NewEncoder(w).Encode(data)
+}

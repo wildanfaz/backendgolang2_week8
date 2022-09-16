@@ -11,6 +11,7 @@ type HistoriesRepo interface {
 	SaveHistory(data *models.History) (*models.History, error)
 	ChangeHistory(r *http.Request, data *models.History) (*models.History, error)
 	RemoveHistory(r *http.Request, data *models.History) (*models.History, error)
+	FindHistory(r *http.Request) (*models.Histories, error)
 }
 
 type HistoriesService interface {
@@ -18,4 +19,5 @@ type HistoriesService interface {
 	AddHistory(data *models.History) (*models.History, error)
 	UpdateHistory(r *http.Request, data *models.History) (*models.History, error)
 	DeleteHistory(r *http.Request, data *models.History) (*models.History, error)
+	SearchHistory(r *http.Request) (*models.Histories, error)
 }

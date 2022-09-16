@@ -54,3 +54,13 @@ func (re *vehicles_service) DeleteVehicle(r *http.Request, data *models.Vehicle)
 
 	return data, nil
 }
+
+func (re *vehicles_service) SearchVehicle(r *http.Request) (*models.Vehicles, error) {
+	data, err := re.repo.FindVehicle(r)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

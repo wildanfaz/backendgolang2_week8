@@ -62,3 +62,16 @@ func (re *histories_repo) RemoveHistory(r *http.Request, data *models.History) (
 
 	return data, nil
 }
+
+func (re *histories_repo) FindHistory(r *http.Request) (*models.Histories, error) {
+	var data models.Histories
+
+	search := r.URL.Query().Get("vehicle_id")
+	result := re.db.Preload("Vehicle").Preload("User").Where("vehicle_id = ?", search).Find(&data)
+
+	if result.Error != nil {
+		return nil, errors.New("failed get users")
+	}
+
+	return &data, nil
+}
