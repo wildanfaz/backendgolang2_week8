@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
+	"github.com/wildanfaz/backendgolang2_week8/src/helpers"
 	"github.com/wildanfaz/backendgolang2_week8/src/interfaces"
 )
 
@@ -25,7 +26,7 @@ func (re *histories_ctrl) GetAllHistories(w http.ResponseWriter, r *http.Request
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	helpers.Response(data, w, 200, "success get data", nil)
 }
 
 func (re *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
