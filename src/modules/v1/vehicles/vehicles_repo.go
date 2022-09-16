@@ -20,7 +20,7 @@ func NewRepo(db *gorm.DB) *vehicles_repo {
 func (re *vehicles_repo) FindAllVehicles() (*models.Vehicles, error) {
 	var data models.Vehicles
 
-	result := re.db.Find(&data)
+	result := re.db.Order("created_at desc").Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get vehicles")
@@ -68,7 +68,7 @@ func (re *vehicles_repo) FindVehicle(r *http.Request) (*models.Vehicles, error) 
 
 	search := r.URL.Query().Get("vehicle_name")
 	s := "%" + search + "%"
-	result := re.db.Where("vehicle_name LIKE ?", s).Find(&data)
+	result := re.db.Where("LOWER(vehicle_name) LIKE ?", s).Order("created_at desc").Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get users")

@@ -55,12 +55,12 @@ func (re *users_service) DeleteUser(r *http.Request, data *models.User) (*models
 	return data, nil
 }
 
-func (re *users_service) SearchUser(r *http.Request) (*models.Users, error) {
-	data, err := re.repo.FindUser(r)
+// func (re *users_service) SearchUser(r *http.Request) (*models.Users, error) {
+// 	data, err := re.repo.FindUser(r)
 
-	if err != nil {
-		return nil, err
-	}
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	return data, nil
-}
+// 	return data, nil
+// }

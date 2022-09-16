@@ -20,7 +20,7 @@ func NewRepo(db *gorm.DB) *histories_repo {
 func (re *histories_repo) FindAllHistories() (*models.Histories, error) {
 	var data models.Histories
 
-	result := re.db.Preload("Vehicle").Preload("User").Find(&data)
+	result := re.db.Order("created_at desc").Preload("Vehicle").Preload("User").Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get histories")
@@ -67,7 +67,7 @@ func (re *histories_repo) FindHistory(r *http.Request) (*models.Histories, error
 	var data models.Histories
 
 	search := r.URL.Query().Get("vehicle_id")
-	result := re.db.Preload("Vehicle").Preload("User").Where("vehicle_id = ?", search).Find(&data)
+	result := re.db.Preload("Vehicle").Preload("User").Where("vehicle_id = ?", search).Order("created_at desc").Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get users")

@@ -20,7 +20,7 @@ func NewRepo(db *gorm.DB) *users_repo {
 func (re *users_repo) FindAllUsers() (*models.Users, error) {
 	var data models.Users
 
-	result := re.db.Find(&data)
+	result := re.db.Order("created_at desc").Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get users")
@@ -63,16 +63,17 @@ func (re *users_repo) RemoveUser(r *http.Request, data *models.User) (*models.Us
 	return data, nil
 }
 
-func (re *users_repo) FindUser(r *http.Request) (*models.Users, error) {
-	var data models.Users
+// func (re *users_repo) FindUser(r *http.Request) (*models.Users, error) {
+// 	var data models.Users
 
-	search := r.URL.Query().Get("name")
-	s := "%" + search + "%"
-	result := re.db.Where("name LIKE ?", s).Find(&data)
+// 	search := r.URL.Query().Get("name")
+// 	s := "%" + search + "%"
+// 	s = strings.ToLower(s)
+// 	result := re.db.Where("LOWER(name) LIKE ?", s).Order("created_at desc").Find(&data)
 
-	if result.Error != nil {
-		return nil, errors.New("failed get users")
-	}
+// 	if result.Error != nil {
+// 		return nil, errors.New("failed get users")
+// 	}
 
-	return &data, nil
-}
+// 	return &data, nil
+// }
