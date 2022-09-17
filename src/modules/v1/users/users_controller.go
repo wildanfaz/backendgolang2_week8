@@ -25,7 +25,7 @@ func (re *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(data, w, 400, "", "GET", err)
 	} else {
-		helpers.Response(data, w, 201, "success get data", "GET", nil)
+		helpers.Response(data, w, 200, "success get data", "GET", nil)
 	}
 }
 
@@ -39,6 +39,7 @@ func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 		helpers.Response(datas, w, 400, "", "POST", err)
 	} else {
 		data, err := re.svc.AddUser(&datas)
+
 		if err != nil {
 			helpers.Response(data, w, 400, "", "POST", err)
 		} else {
@@ -56,14 +57,13 @@ func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(datas, w, 400, "", "PUT", err)
 	} else {
+		data, err := re.svc.UpdateUser(r, &datas)
 
-	}
-
-	data, err := re.svc.UpdateUser(r, &datas)
-	if err != nil {
-		helpers.Response(datas, w, 400, "", "PUT", err)
-	} else {
-		helpers.Response(data, w, 200, "success update data", "PUT", nil)
+		if err != nil {
+			helpers.Response(datas, w, 400, "", "PUT", err)
+		} else {
+			helpers.Response(data, w, 200, "success update data", "PUT", nil)
+		}
 	}
 }
 
@@ -76,7 +76,7 @@ func (re *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(data, w, 400, "", "DELETE", err)
 	} else {
-		helpers.Response(data, w, 200, "success update data", "PUT", nil)
+		helpers.Response(data, w, 200, "success delete data", "PUT", nil)
 	}
 }
 

@@ -30,6 +30,22 @@ func (re *users_repo) FindAllUsers() (*models.Users, error) {
 }
 
 func (re *users_repo) SaveUser(data *models.User) (*models.User, error) {
+	// var exists bool
+
+	// re.db.Raw("SELECT EXISTS(SELECT * FROM users WHERE name = ?)", data.Name).Scan(&exists)
+
+	// if exists {
+	// 	return nil, errors.New("name already exists")
+	// }
+	var exists int64
+
+	re.db.Model(&data).Where("name = ?", data.Name).Count(&exists)
+	isExists := exists > 0
+
+	if isExists {
+		return nil, errors.New("name already exists")
+	}
+
 	result := re.db.Create(data)
 
 	if result.Error != nil {
@@ -40,6 +56,21 @@ func (re *users_repo) SaveUser(data *models.User) (*models.User, error) {
 }
 
 func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.User, error) {
+	// var exists bool
+
+	// re.db.Raw("SELECT EXISTS (SELECT * FROM users WHERE name = ?)", data.Name).Scan(&exists)
+
+	// if exists == true {
+	// 	return nil, errors.New("name already exists")
+	// }
+	var exists int64
+
+	re.db.Model(&data).Where("name = ?", data.Name).Count(&exists)
+
+	if isExists := exists > 0; isExists {
+		return nil, errors.New("name already exists")
+	}
+
 	vars := mux.Vars(r)
 
 	result := re.db.Model(&data).Where("name = ?", vars["name"]).Updates(data)

@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type histories_repo struct {
@@ -20,10 +21,10 @@ func NewRepo(db *gorm.DB) *histories_repo {
 func (re *histories_repo) FindAllHistories() (*models.Histories, error) {
 	var data models.Histories
 
-	result := re.db.Order("created_at desc").Preload("Vehicle").Preload("User").Find(&data)
+	result := re.db.Order("created_at desc").Preload(clause.Associations).Find(&data)
 
 	if result.Error != nil {
-		return nil, errors.New("failed get histories")
+		return nil, errors.New("failed get users")
 	}
 
 	return &data, nil
@@ -72,6 +73,14 @@ func (re *histories_repo) FindHistory(r *http.Request) (*models.Histories, error
 	if result.Error != nil {
 		return nil, errors.New("failed get users")
 	}
+
+	return &data, nil
+}
+
+func (re *histories_repo) FindVehicles() (*models.Histories, error) {
+	var data models.Histories
+
+	re.db.Preload(clause.Associations).Find(&data)
 
 	return &data, nil
 }

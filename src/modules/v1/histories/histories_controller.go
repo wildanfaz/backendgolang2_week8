@@ -39,10 +39,11 @@ func (re *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
 		helpers.Response(datas, w, 400, "", "POST", err)
 	} else {
 		data, err := re.svc.AddHistory(&datas)
+
 		if err != nil {
 			helpers.Response(data, w, 400, "", "POST", err)
 		} else {
-			helpers.Response(data, w, 200, "success add data", "POST", nil)
+			helpers.Response(data, w, 201, "success add data", "POST", nil)
 		}
 	}
 }
@@ -57,6 +58,7 @@ func (re *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request) 
 		helpers.Response(datas, w, 400, "", "PUT", err)
 	} else {
 		data, err := re.svc.UpdateHistory(r, &datas)
+
 		if err != nil {
 			helpers.Response(data, w, 400, "", "PUT", err)
 		} else {
@@ -86,5 +88,16 @@ func (re *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request) 
 		helpers.Response(data, w, 400, "", "GET", err)
 	} else {
 		helpers.Response(data, w, 200, "success search data", "GET", nil)
+	}
+}
+
+func (re *histories_ctrl) PopularVehicles(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	data, err := re.svc.PopularVehicles()
+	if err != nil {
+		helpers.Response(data, w, 400, "", "GET", err)
+	} else {
+		helpers.Response(data, w, 200, "success get data", "GET", nil)
 	}
 }

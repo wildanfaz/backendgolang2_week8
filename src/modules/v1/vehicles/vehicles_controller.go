@@ -39,10 +39,11 @@ func (re *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 		helpers.Response(datas, w, 400, "", "POST", err)
 	} else {
 		data, err := re.svc.AddVehicle(&datas)
+
 		if err != nil {
 			helpers.Response(data, w, 400, "", "POST", err)
 		} else {
-			helpers.Response(data, w, 200, "success add data", "POST", nil)
+			helpers.Response(data, w, 201, "success add data", "POST", nil)
 		}
 	}
 }
@@ -57,6 +58,7 @@ func (re *vehicles_ctrl) UpdateVehicle(w http.ResponseWriter, r *http.Request) {
 		helpers.Response(datas, w, 400, "", "PUT", err)
 	} else {
 		data, err := re.svc.UpdateVehicle(r, &datas)
+
 		if err != nil {
 			helpers.Response(data, w, 400, "", "PUT", err)
 		} else {
