@@ -15,6 +15,7 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, m
 		desc = "OK"
 	case 201:
 		desc = "Created"
+		w.WriteHeader(201)
 	case 304:
 		desc = "Not Modified"
 		http.Error(w, msg, http.StatusNotModified)

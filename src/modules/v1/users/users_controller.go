@@ -23,10 +23,10 @@ func (re *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	data, err := re.svc.GetAllUsers()
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		helpers.Response(data, w, 400, "", "GET", err)
+	} else {
+		helpers.Response(data, w, 201, "success get data", "GET", nil)
 	}
-
-	json.NewEncoder(w).Encode(data)
 }
 
 func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
@@ -36,15 +36,15 @@ func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		helpers.Response(datas, w, 400, "", "POST", err)
+	} else {
+		data, err := re.svc.AddUser(&datas)
+		if err != nil {
+			helpers.Response(data, w, 400, "", "POST", err)
+		} else {
+			helpers.Response(data, w, 201, "success add data", "POST", nil)
+		}
 	}
-
-	data, err := re.svc.AddUser(&datas)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-	}
-
-	helpers.Response(data, w, 200, "success add data", "POST", nil)
 }
 
 func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
@@ -54,15 +54,17 @@ func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		helpers.Response(datas, w, 400, "", "PUT", err)
+	} else {
+
 	}
 
 	data, err := re.svc.UpdateUser(r, &datas)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		helpers.Response(datas, w, 400, "", "PUT", err)
+	} else {
+		helpers.Response(data, w, 200, "success update data", "PUT", nil)
 	}
-
-	json.NewEncoder(w).Encode(data)
 }
 
 func (re *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
@@ -72,10 +74,10 @@ func (re *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	data, err := re.svc.DeleteUser(r, &datas)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		helpers.Response(data, w, 400, "", "DELETE", err)
+	} else {
+		helpers.Response(data, w, 200, "success update data", "PUT", nil)
 	}
-
-	json.NewEncoder(w).Encode(data)
 }
 
 // func (re *users_ctrl) SearchUser(w http.ResponseWriter, r *http.Request) {
