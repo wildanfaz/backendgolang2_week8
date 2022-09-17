@@ -26,7 +26,7 @@ func (re *vehicles_ctrl) GetAllVehicles(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	helpers.Response(data, w, 200, "success get data", nil)
+	helpers.Response(data, w, 200, "success get data", "GET", nil)
 }
 
 func (re *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {

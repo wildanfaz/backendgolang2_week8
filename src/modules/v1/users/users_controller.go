@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
+	"github.com/wildanfaz/backendgolang2_week8/src/helpers"
 	"github.com/wildanfaz/backendgolang2_week8/src/interfaces"
 )
 
@@ -43,7 +44,7 @@ func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	helpers.Response(data, w, 200, "success add data", "POST", nil)
 }
 
 func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
