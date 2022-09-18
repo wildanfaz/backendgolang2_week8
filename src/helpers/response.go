@@ -51,19 +51,17 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, m
 		result["http code"] = status
 		result["http description"] = desc
 		result["error"] = err.Error()
-		json.NewEncoder(w).Encode(result)
 	} else if method == "GET" {
 		result["http code"] = status
 		result["http description"] = desc
 		result["error"] = err
 		result["msg"] = msg
 		result["result"] = data
-		json.NewEncoder(w).Encode(result)
 	} else {
 		result["http code"] = status
 		result["http description"] = desc
 		result["error"] = err
 		result["msg"] = msg
-		json.NewEncoder(w).Encode(result)
 	}
+	json.NewEncoder(w).Encode(result)
 }

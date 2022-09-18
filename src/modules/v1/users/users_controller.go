@@ -21,7 +21,6 @@ func (re *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	data, err := re.svc.GetAllUsers()
-
 	if err != nil {
 		helpers.Response(data, w, 400, "", "GET", err)
 	} else {
