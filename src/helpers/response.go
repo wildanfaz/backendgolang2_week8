@@ -25,6 +25,9 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, m
 	case 401:
 		desc = "Unauthorized"
 		http.Error(w, "", http.StatusUnauthorized)
+	case 404:
+		desc = "Unauthorized"
+		http.Error(w, "", http.StatusNotFound)
 	case 500:
 		desc = "Internal Server Error"
 		http.Error(w, "", http.StatusInternalServerError)
