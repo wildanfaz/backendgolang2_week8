@@ -46,6 +46,8 @@ func (re *users_repo) SaveUser(data *models.User) (*models.User, error) {
 		return nil, errors.New("name already exists")
 	}
 
+	// hashpassword, err := helpers.Hashing(data.Password)
+
 	result := re.db.Create(data)
 
 	if result.Error != nil {
