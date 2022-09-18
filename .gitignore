@@ -1,4 +1,4 @@
-.env
-.log
-.exe
-/tmp
+*.env
+*.log
+*.exe
+tmp
