@@ -23,7 +23,7 @@ func (re *vehicles_ctrl) GetAllVehicles(w http.ResponseWriter, r *http.Request) 
 	data, err := re.svc.GetAllVehicles()
 
 	if err != nil {
-		helpers.Response(data, w, 400, "", "GET", err)
+		helpers.Response(data, w, 400, "failed get data", "GET", err)
 	} else {
 		helpers.Response(data, w, 200, "success get data", "GET", nil)
 	}
@@ -36,12 +36,12 @@ func (re *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-		helpers.Response(datas, w, 400, "", "POST", err)
+		helpers.Response(datas, w, 400, "failed add data", "POST", err)
 	} else {
 		data, err := re.svc.AddVehicle(&datas)
 
 		if err != nil {
-			helpers.Response(data, w, 400, "", "POST", err)
+			helpers.Response(data, w, 400, "failed add data", "POST", err)
 		} else {
 			helpers.Response(data, w, 201, "success add data", "POST", nil)
 		}
@@ -55,12 +55,12 @@ func (re *vehicles_ctrl) UpdateVehicle(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-		helpers.Response(datas, w, 400, "", "PUT", err)
+		helpers.Response(datas, w, 400, "failed update data", "PUT", err)
 	} else {
 		data, err := re.svc.UpdateVehicle(r, &datas)
 
 		if err != nil {
-			helpers.Response(data, w, 400, "", "PUT", err)
+			helpers.Response(data, w, 400, "failed update data", "PUT", err)
 		} else {
 			helpers.Response(data, w, 200, "success update data", "PUT", nil)
 		}
@@ -73,8 +73,9 @@ func (re *vehicles_ctrl) DeleteVehicle(w http.ResponseWriter, r *http.Request) {
 	var datas models.Vehicle
 
 	data, err := re.svc.DeleteVehicle(r, &datas)
+
 	if err != nil {
-		helpers.Response(data, w, 400, "", "DELETE", err)
+		helpers.Response(data, w, 400, "failed delete data", "DELETE", err)
 	} else {
 		helpers.Response(data, w, 200, "success delete data", "DELETE", nil)
 	}
@@ -86,7 +87,7 @@ func (re *vehicles_ctrl) SearchVehicle(w http.ResponseWriter, r *http.Request) {
 	data, err := re.svc.SearchVehicle(r)
 
 	if err != nil {
-		helpers.Response(data, w, 400, "", "GET", err)
+		helpers.Response(data, w, 400, "failed search data", "GET", err)
 	} else {
 		helpers.Response(data, w, 200, "success search data", "GET", nil)
 	}
@@ -98,7 +99,7 @@ func (re *vehicles_ctrl) PopularVehicles(w http.ResponseWriter, r *http.Request)
 	data, err := re.svc.PopularVehicles()
 
 	if err != nil {
-		helpers.Response(data, w, 400, "", "GET", err)
+		helpers.Response(data, w, 400, "failed get data", "GET", err)
 	} else {
 		helpers.Response(data, w, 200, "success get data", "GET", nil)
 	}

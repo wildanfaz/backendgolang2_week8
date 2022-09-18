@@ -21,8 +21,9 @@ func (re *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	data, err := re.svc.GetAllUsers()
+
 	if err != nil {
-		helpers.Response(data, w, 400, "", "GET", err)
+		helpers.Response(data, w, 400, "failed get data", "GET", err)
 	} else {
 		helpers.Response(data, w, 200, "success get data", "GET", nil)
 	}
@@ -35,12 +36,12 @@ func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-		helpers.Response(datas, w, 400, "", "POST", err)
+		helpers.Response(datas, w, 400, "failed add data", "POST", err)
 	} else {
 		data, err := re.svc.AddUser(&datas)
 
 		if err != nil {
-			helpers.Response(data, w, 400, "", "POST", err)
+			helpers.Response(data, w, 400, "failed add data", "POST", err)
 		} else {
 			helpers.Response(data, w, 201, "success add data", "POST", nil)
 		}
@@ -54,12 +55,12 @@ func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-		helpers.Response(datas, w, 400, "", "PUT", err)
+		helpers.Response(datas, w, 400, "failed update data", "PUT", err)
 	} else {
 		data, err := re.svc.UpdateUser(r, &datas)
 
 		if err != nil {
-			helpers.Response(datas, w, 400, "", "PUT", err)
+			helpers.Response(datas, w, 400, "failed update data", "PUT", err)
 		} else {
 			helpers.Response(data, w, 200, "success update data", "PUT", nil)
 		}
@@ -72,8 +73,9 @@ func (re *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	var datas models.User
 
 	data, err := re.svc.DeleteUser(r, &datas)
+
 	if err != nil {
-		helpers.Response(data, w, 400, "", "DELETE", err)
+		helpers.Response(data, w, 400, "failed delete data", "DELETE", err)
 	} else {
 		helpers.Response(data, w, 200, "success delete data", "PUT", nil)
 	}

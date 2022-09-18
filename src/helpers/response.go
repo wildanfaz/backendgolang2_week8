@@ -18,19 +18,19 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, m
 		w.WriteHeader(201)
 	case 304:
 		desc = "Not Modified"
-		http.Error(w, msg, http.StatusNotModified)
+		http.Error(w, "", http.StatusNotModified)
 	case 400:
 		desc = "Bad Request"
-		http.Error(w, msg, http.StatusBadRequest)
+		http.Error(w, "", http.StatusBadRequest)
 	case 401:
 		desc = "Unauthorized"
-		http.Error(w, msg, http.StatusUnauthorized)
+		http.Error(w, "", http.StatusUnauthorized)
 	case 500:
 		desc = "Internal Server Error"
-		http.Error(w, msg, http.StatusInternalServerError)
+		http.Error(w, "", http.StatusInternalServerError)
 	case 501:
 		desc = "Bad Gateway"
-		http.Error(w, msg, http.StatusBadGateway)
+		http.Error(w, "", http.StatusBadGateway)
 	default:
 		desc = ""
 	}
@@ -50,6 +50,7 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, m
 	if err != nil {
 		result["http code"] = status
 		result["http description"] = desc
+		result["msg"] = msg
 		result["error"] = err.Error()
 	} else if method == "GET" {
 		result["http code"] = status
