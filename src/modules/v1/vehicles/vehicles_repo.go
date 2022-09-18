@@ -94,3 +94,15 @@ func (re *vehicles_repo) FindVehicle(r *http.Request) (*models.Vehicles, error) 
 
 	return &data, nil
 }
+
+func (re *vehicles_repo) RatingVehicles() (*models.Vehicles, error) {
+	var data models.Vehicles
+
+	result := re.db.Order("rating desc").Find(&data)
+
+	if result.Error != nil {
+		return nil, errors.New("failed get vehicles")
+	}
+
+	return &data, nil
+}

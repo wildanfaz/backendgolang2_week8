@@ -64,13 +64,3 @@ func (re *histories_service) SearchHistory(r *http.Request) (*models.Histories, 
 
 	return data, nil
 }
-
-func (re *histories_service) PopularVehicles() (*models.Histories, error) {
-	data, err := re.repo.FindVehicles()
-
-	if err != nil {
-		return nil, err
-	}
-
-	return data, nil
-}

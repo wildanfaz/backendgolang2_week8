@@ -90,14 +90,3 @@ func (re *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request) 
 		helpers.Response(data, w, 200, "success search data", "GET", nil)
 	}
 }
-
-func (re *histories_ctrl) PopularVehicles(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	data, err := re.svc.PopularVehicles()
-	if err != nil {
-		helpers.Response(data, w, 400, "", "GET", err)
-	} else {
-		helpers.Response(data, w, 200, "success get data", "GET", nil)
-	}
-}

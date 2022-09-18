@@ -12,6 +12,7 @@ type VehiclesRepo interface {
 	ChangeVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error)
 	RemoveVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error)
 	FindVehicle(r *http.Request) (*models.Vehicles, error)
+	RatingVehicles() (*models.Vehicles, error)
 }
 
 type VehiclesService interface {
@@ -20,4 +21,5 @@ type VehiclesService interface {
 	UpdateVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error)
 	DeleteVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error)
 	SearchVehicle(r *http.Request) (*models.Vehicles, error)
+	PopularVehicles() (*models.Vehicles, error)
 }

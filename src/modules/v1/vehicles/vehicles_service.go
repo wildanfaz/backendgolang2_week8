@@ -64,3 +64,13 @@ func (re *vehicles_service) SearchVehicle(r *http.Request) (*models.Vehicles, er
 
 	return data, nil
 }
+
+func (re *vehicles_service) PopularVehicles() (*models.Vehicles, error) {
+	data, err := re.repo.RatingVehicles()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

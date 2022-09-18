@@ -67,5 +67,3 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, m
 		json.NewEncoder(w).Encode(result)
 	}
 }
-
-// func Error()

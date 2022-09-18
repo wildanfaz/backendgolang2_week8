@@ -12,7 +12,6 @@ type HistoriesRepo interface {
 	ChangeHistory(r *http.Request, data *models.History) (*models.History, error)
 	RemoveHistory(r *http.Request, data *models.History) (*models.History, error)
 	FindHistory(r *http.Request) (*models.Histories, error)
-	FindVehicles() (*models.Histories, error)
 }
 
 type HistoriesService interface {
@@ -21,5 +20,4 @@ type HistoriesService interface {
 	UpdateHistory(r *http.Request, data *models.History) (*models.History, error)
 	DeleteHistory(r *http.Request, data *models.History) (*models.History, error)
 	SearchHistory(r *http.Request) (*models.Histories, error)
-	PopularVehicles() (*models.Histories, error)
 }
