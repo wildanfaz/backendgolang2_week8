@@ -39,11 +39,11 @@ func (re *users_repo) SaveUser(data *models.User) (*models.User, error) {
 	// }
 	var exists int64
 
-	re.db.Model(&data).Where("name = ?", data.Name).Count(&exists)
+	re.db.Model(&data).Where("name = ? OR email = ?", data.Name, data.Email).Count(&exists)
 	isExists := exists > 0
 
 	if isExists {
-		return nil, errors.New("name already exists")
+		return nil, errors.New("name or email already exists")
 	}
 
 	// hashpassword, err := helpers.Hashing(data.Password)
