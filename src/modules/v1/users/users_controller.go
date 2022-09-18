@@ -77,7 +77,7 @@ func (re *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(data, w, 400, "failed delete data", "DELETE", err)
 	} else {
-		helpers.Response(data, w, 200, "success delete data", "PUT", nil)
+		helpers.Response(data, w, 200, "success delete data", "DELETE", nil)
 	}
 }
 
