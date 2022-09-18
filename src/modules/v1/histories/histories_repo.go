@@ -43,6 +43,15 @@ func (re *histories_repo) SaveHistory(data *models.History) (*models.History, er
 func (re *histories_repo) ChangeHistory(r *http.Request, data *models.History) (*models.History, error) {
 	vars := mux.Vars(r)
 
+	var check int64
+
+	re.db.Model(&data).Where("history_id = ?", vars["history_id"]).Count(&check)
+	checkName := check > 0
+
+	if checkName == false {
+		return nil, errors.New("history is not exists")
+	}
+
 	result := re.db.Model(&data).Where("history_id = ?", vars["history_id"]).Updates(data)
 
 	if result.Error != nil {
@@ -54,6 +63,15 @@ func (re *histories_repo) ChangeHistory(r *http.Request, data *models.History) (
 
 func (re *histories_repo) RemoveHistory(r *http.Request, data *models.History) (*models.History, error) {
 	vars := mux.Vars(r)
+
+	var check int64
+
+	re.db.Model(&data).Where("history_id = ?", vars["history_id"]).Count(&check)
+	checkName := check > 0
+
+	if checkName == false {
+		return nil, errors.New("history is not exists")
+	}
 
 	result := re.db.Delete(data, vars["history_id"])
 
@@ -80,7 +98,7 @@ func (re *histories_repo) FindHistory(r *http.Request) (*models.Histories, error
 func (re *histories_repo) FindVehicles() (*models.Histories, error) {
 	var data models.Histories
 
-	re.db.Preload(clause.Associations).Find(&data)
+	re.db.Preload(clause.Associations).Select("vehicle_id")
 
 	return &data, nil
 }

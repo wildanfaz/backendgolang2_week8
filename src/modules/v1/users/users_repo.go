@@ -63,15 +63,25 @@ func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.Us
 	// if exists == true {
 	// 	return nil, errors.New("name already exists")
 	// }
+	vars := mux.Vars(r)
+
+	var check int64
+
+	re.db.Model(&data).Where("name = ?", vars["name"]).Count(&check)
+	checkName := check > 0
+
+	if checkName == false {
+		return nil, errors.New("name is not exists")
+	}
+
 	var exists int64
 
 	re.db.Model(&data).Where("name = ?", data.Name).Count(&exists)
+	isExists := exists > 0
 
-	if isExists := exists > 0; isExists {
+	if isExists {
 		return nil, errors.New("name already exists")
 	}
-
-	vars := mux.Vars(r)
 
 	result := re.db.Model(&data).Where("name = ?", vars["name"]).Updates(data)
 
@@ -84,6 +94,15 @@ func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.Us
 
 func (re *users_repo) RemoveUser(r *http.Request, data *models.User) (*models.User, error) {
 	vars := mux.Vars(r)
+
+	var check int64
+
+	re.db.Model(&data).Where("name = ?", vars["name"]).Count(&check)
+	checkName := check > 0
+
+	if checkName == false {
+		return nil, errors.New("name is not exists")
+	}
 
 	result := re.db.Where("name = ?", vars["name"]).Delete(data)
 

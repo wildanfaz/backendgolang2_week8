@@ -42,6 +42,15 @@ func (re *vehicles_repo) SaveVehicle(data *models.Vehicle) (*models.Vehicle, err
 func (re *vehicles_repo) ChangeVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error) {
 	vars := mux.Vars(r)
 
+	var check int64
+
+	re.db.Model(&data).Where("vehicle_id = ?", vars["vehicle_id"]).Count(&check)
+	checkName := check > 0
+
+	if checkName == false {
+		return nil, errors.New("vehicle is not exists")
+	}
+
 	result := re.db.Model(&data).Where("vehicle_id = ?", vars["vehicle_id"]).Updates(data)
 
 	if result.Error != nil {
@@ -53,6 +62,15 @@ func (re *vehicles_repo) ChangeVehicle(r *http.Request, data *models.Vehicle) (*
 
 func (re *vehicles_repo) RemoveVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error) {
 	vars := mux.Vars(r)
+
+	var check int64
+
+	re.db.Model(&data).Where("vehicle_id = ?", vars["vehicle_id"]).Count(&check)
+	checkName := check > 0
+
+	if checkName == false {
+		return nil, errors.New("vehicle is not exists")
+	}
 
 	result := re.db.Delete(data, vars["vehicle_id"])
 
