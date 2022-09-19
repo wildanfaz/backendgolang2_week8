@@ -21,7 +21,11 @@ func NewRepo(db *gorm.DB) *histories_repo {
 func (re *histories_repo) FindAllHistories() (*models.Histories, error) {
 	var data models.Histories
 
-	result := re.db.Order("created_at desc").Preload(clause.Associations).Find(&data)
+	result := re.db.Order("created_at desc").Preload("Vehicle", func(db *gorm.DB) *gorm.DB {
+		return db.Select("vehicle_id, vehicle_name")
+	}).Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("user_id, name, email")
+	}).Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get users")
