@@ -89,7 +89,11 @@ func (re *histories_repo) FindHistory(r *http.Request) (*models.Histories, error
 	var data models.Histories
 
 	search := r.URL.Query().Get("vehicle_id")
-	result := re.db.Preload("Vehicle").Preload("User").Where("vehicle_id = ?", search).Order("created_at desc").Find(&data)
+	result := re.db.Preload("Vehicle", func(db *gorm.DB) *gorm.DB {
+		return db.Select("vehicle_id, vehicle_name, created_at, updated_at")
+	}).Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("user_id, name, email, created_at, updated_at")
+	}).Where("vehicle_id = ?", search).Order("created_at desc").Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get users")
