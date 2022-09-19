@@ -21,7 +21,7 @@ func (re *histories_repo) FindAllHistories() (*models.Histories, error) {
 	var data models.Histories
 
 	result := re.db.Order("created_at desc").Preload("Vehicle", func(db *gorm.DB) *gorm.DB {
-		return db.Select("vehicle_id, vehicle_name, created_at, updated_at")
+		return db.Select("vehicle_id, vehicle_name, created_at, updated_at, total_rented")
 	}).Preload("User", func(db *gorm.DB) *gorm.DB {
 		return db.Select("user_id, name, email, created_at, updated_at")
 	}).Find(&data)
@@ -34,11 +34,17 @@ func (re *histories_repo) FindAllHistories() (*models.Histories, error) {
 }
 
 func (re *histories_repo) SaveHistory(data *models.History) (*models.History, error) {
+	var vehicle models.Vehicle
+
 	result := re.db.Create(data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed save history")
 	}
+
+	re.db.Where("vehicle_id = ?", data.VehicleId).First(&vehicle)
+
+	re.db.Model(&vehicle).Where("vehicle_id = ?", data.VehicleId).Update("total_rented", vehicle.TotalRented+1)
 
 	return data, nil
 }
@@ -65,6 +71,7 @@ func (re *histories_repo) ChangeHistory(r *http.Request, data *models.History) (
 }
 
 func (re *histories_repo) RemoveHistory(r *http.Request, data *models.History) (*models.History, error) {
+	var vehicle models.Vehicle
 	vars := mux.Vars(r)
 
 	var check int64
@@ -75,6 +82,12 @@ func (re *histories_repo) RemoveHistory(r *http.Request, data *models.History) (
 	if checkName == false {
 		return nil, errors.New("history is not exists")
 	}
+
+	re.db.Where("history_id = ?", vars["history_id"]).First(&data)
+
+	re.db.Where("vehicle_id = ?", data.VehicleId).First(&vehicle)
+
+	re.db.Model(&vehicle).Where("vehicle_id = ?", data.VehicleId).Update("total_rented", vehicle.TotalRented-1)
 
 	result := re.db.Delete(data, vars["history_id"])
 
@@ -89,8 +102,9 @@ func (re *histories_repo) FindHistory(r *http.Request) (*models.Histories, error
 	var data models.Histories
 
 	search := r.URL.Query().Get("vehicle_id")
+
 	result := re.db.Preload("Vehicle", func(db *gorm.DB) *gorm.DB {
-		return db.Select("vehicle_id, vehicle_name, created_at, updated_at")
+		return db.Select("vehicle_id, vehicle_name, created_at, updated_at, total_rented")
 	}).Preload("User", func(db *gorm.DB) *gorm.DB {
 		return db.Select("user_id, name, email, created_at, updated_at")
 	}).Where("vehicle_id = ?", search).Order("created_at desc").Find(&data)
