@@ -2,11 +2,10 @@ package helpers
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 )
 
-func Response(data interface{}, w http.ResponseWriter, status int, msg string, method string, err error) {
+func Response(data interface{}, showData bool, w http.ResponseWriter, status int, msg string, err error) {
 	var result = make(map[string]interface{})
 	var desc string
 
@@ -38,24 +37,12 @@ func Response(data interface{}, w http.ResponseWriter, status int, msg string, m
 		desc = ""
 	}
 
-	checkMethod := []string{"GET", "POST", "PUT", "DELETE"}
-	for _, v := range checkMethod {
-		if method == v {
-			checkMethod = append(checkMethod, "add length")
-			break
-		}
-	}
-
-	if len(checkMethod) == 4 {
-		err = errors.New("invalid method in controller")
-	}
-
 	if err != nil {
 		result["http code"] = status
 		result["http description"] = desc
 		result["msg"] = msg
 		result["error"] = err.Error()
-	} else if method == "GET" {
+	} else if showData == true {
 		result["http code"] = status
 		result["http description"] = desc
 		result["error"] = err

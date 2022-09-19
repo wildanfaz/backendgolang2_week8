@@ -78,11 +78,11 @@ func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.Us
 
 	var exists int64
 
-	re.db.Model(&data).Where("name = ?", data.Name).Count(&exists)
+	re.db.Model(&data).Where("name = ? or email = ?", data.Name, data.Email).Count(&exists)
 	isExists := exists > 0
 
 	if isExists {
-		return nil, errors.New("name already exists")
+		return nil, errors.New("name or email already exists")
 	}
 
 	result := re.db.Model(&data).Where("name = ?", vars["name"]).Updates(data)
