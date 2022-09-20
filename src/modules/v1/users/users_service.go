@@ -13,8 +13,8 @@ func NewService(repo interfaces.UsersRepo) *users_service {
 	return &users_service{repo}
 }
 
-func (re *users_service) GetAllUsers() (*models.Users, error) {
-	data, err := re.repo.FindAllUsers()
+func (svc *users_service) GetAllUsers() (*models.Users, error) {
+	data, err := svc.repo.FindAllUsers()
 
 	if err != nil {
 		return nil, err
@@ -23,8 +23,8 @@ func (re *users_service) GetAllUsers() (*models.Users, error) {
 	return data, nil
 }
 
-func (re *users_service) AddUser(data *models.User) (*models.User, error) {
-	data, err := re.repo.SaveUser(data)
+func (svc *users_service) AddUser(data *models.User) (*models.User, error) {
+	data, err := svc.repo.SaveUser(data)
 
 	if err != nil {
 		return nil, err
@@ -33,8 +33,8 @@ func (re *users_service) AddUser(data *models.User) (*models.User, error) {
 	return data, nil
 }
 
-func (re *users_service) UpdateUser(vars string, data *models.User) (*models.User, error) {
-	data, err := re.repo.ChangeUser(vars, data)
+func (svc *users_service) UpdateUser(vars string, data *models.User) (*models.User, error) {
+	data, err := svc.repo.ChangeUser(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -43,8 +43,8 @@ func (re *users_service) UpdateUser(vars string, data *models.User) (*models.Use
 	return data, nil
 }
 
-func (re *users_service) DeleteUser(vars string, data *models.User) (*models.User, error) {
-	data, err := re.repo.RemoveUser(vars, data)
+func (svc *users_service) DeleteUser(vars string, data *models.User) (*models.User, error) {
+	data, err := svc.repo.RemoveUser(vars, data)
 
 	if err != nil {
 		return nil, err

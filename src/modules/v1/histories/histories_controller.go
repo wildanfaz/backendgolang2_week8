@@ -18,10 +18,10 @@ func NewCtrl(svc interfaces.HistoriesService) *histories_ctrl {
 	return &histories_ctrl{svc}
 }
 
-func (re *histories_ctrl) GetAllHistories(w http.ResponseWriter, r *http.Request) {
+func (ctrl *histories_ctrl) GetAllHistories(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	data, err := re.svc.GetAllHistories()
+	data, err := ctrl.svc.GetAllHistories()
 
 	if err != nil {
 		helpers.Response(data, true, w, 400, "failed get data", err)
@@ -30,7 +30,7 @@ func (re *histories_ctrl) GetAllHistories(w http.ResponseWriter, r *http.Request
 	}
 }
 
-func (re *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
+func (ctrl *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var datas models.History
@@ -39,7 +39,7 @@ func (re *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(datas, false, w, 400, "failed add data", err)
 	} else {
-		data, err := re.svc.AddHistory(&datas)
+		data, err := ctrl.svc.AddHistory(&datas)
 
 		if err != nil {
 			helpers.Response(data, false, w, 400, "failed add data", err)
@@ -49,7 +49,7 @@ func (re *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (re *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request) {
+func (ctrl *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var datas models.History
@@ -59,7 +59,7 @@ func (re *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request) 
 		helpers.Response(datas, false, w, 400, "failed update data", err)
 	} else {
 		vars := mux.Vars(r)
-		data, err := re.svc.UpdateHistory(vars["history_id"], &datas)
+		data, err := ctrl.svc.UpdateHistory(vars["history_id"], &datas)
 
 		if err != nil {
 			helpers.Response(data, false, w, 400, "failed update data", err)
@@ -69,13 +69,13 @@ func (re *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
-func (re *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request) {
+func (ctrl *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var datas models.History
 
 	vars := mux.Vars(r)
-	data, err := re.svc.DeleteHistory(vars["history_id"], &datas)
+	data, err := ctrl.svc.DeleteHistory(vars["history_id"], &datas)
 
 	if err != nil {
 		helpers.Response(data, false, w, 400, "failed delete data", err)
@@ -84,11 +84,11 @@ func (re *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
-func (re *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request) {
+func (ctrl *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	search := r.URL.Query().Get("vehicle_id")
-	data, err := re.svc.SearchHistory(search)
+	data, err := ctrl.svc.SearchHistory(search)
 
 	if err != nil {
 		helpers.Response(data, true, w, 400, "failed search data", err)

@@ -18,10 +18,10 @@ func NewCtrl(svc interfaces.UsersService) *users_ctrl {
 	return &users_ctrl{svc}
 }
 
-func (re *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
+func (ctrl *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	data, err := re.svc.GetAllUsers()
+	data, err := ctrl.svc.GetAllUsers()
 
 	if err != nil {
 		helpers.Response(data, true, w, 400, "failed get data", err)
@@ -30,7 +30,7 @@ func (re *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
+func (ctrl *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var datas models.User
@@ -39,7 +39,7 @@ func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(datas, false, w, 400, "failed add data", err)
 	} else {
-		data, err := re.svc.AddUser(&datas)
+		data, err := ctrl.svc.AddUser(&datas)
 
 		if err != nil {
 			helpers.Response(data, false, w, 400, "failed add data", err)
@@ -49,7 +49,7 @@ func (re *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (ctrl *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var datas models.User
@@ -59,7 +59,7 @@ func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		helpers.Response(datas, false, w, 400, "failed update data", err)
 	} else {
 		vars := mux.Vars(r)
-		data, err := re.svc.UpdateUser(vars["name"], &datas)
+		data, err := ctrl.svc.UpdateUser(vars["name"], &datas)
 
 		if err != nil {
 			helpers.Response(datas, false, w, 400, "failed update data", err)
@@ -69,14 +69,14 @@ func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (re *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (ctrl *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var datas models.User
 
 	vars := mux.Vars(r)
 
-	data, err := re.svc.DeleteUser(vars["name"], &datas)
+	data, err := ctrl.svc.DeleteUser(vars["name"], &datas)
 
 	if err != nil {
 		helpers.Response(data, false, w, 400, "failed delete data", err)

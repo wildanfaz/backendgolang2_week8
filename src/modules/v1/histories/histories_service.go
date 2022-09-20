@@ -13,8 +13,8 @@ func NewService(repo interfaces.HistoriesRepo) *histories_service {
 	return &histories_service{repo}
 }
 
-func (re *histories_service) GetAllHistories() (*models.Histories, error) {
-	data, err := re.repo.FindAllHistories()
+func (svc *histories_service) GetAllHistories() (*models.Histories, error) {
+	data, err := svc.repo.FindAllHistories()
 
 	if err != nil {
 		return nil, err
@@ -23,8 +23,8 @@ func (re *histories_service) GetAllHistories() (*models.Histories, error) {
 	return data, nil
 }
 
-func (re *histories_service) AddHistory(data *models.History) (*models.History, error) {
-	data, err := re.repo.SaveHistory(data)
+func (svc *histories_service) AddHistory(data *models.History) (*models.History, error) {
+	data, err := svc.repo.SaveHistory(data)
 
 	if err != nil {
 		return nil, err
@@ -33,8 +33,8 @@ func (re *histories_service) AddHistory(data *models.History) (*models.History, 
 	return data, nil
 }
 
-func (re *histories_service) UpdateHistory(vars string, data *models.History) (*models.History, error) {
-	data, err := re.repo.ChangeHistory(vars, data)
+func (svc *histories_service) UpdateHistory(vars string, data *models.History) (*models.History, error) {
+	data, err := svc.repo.ChangeHistory(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -43,8 +43,8 @@ func (re *histories_service) UpdateHistory(vars string, data *models.History) (*
 	return data, nil
 }
 
-func (re *histories_service) DeleteHistory(vars string, data *models.History) (*models.History, error) {
-	data, err := re.repo.RemoveHistory(vars, data)
+func (svc *histories_service) DeleteHistory(vars string, data *models.History) (*models.History, error) {
+	data, err := svc.repo.RemoveHistory(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -53,8 +53,8 @@ func (re *histories_service) DeleteHistory(vars string, data *models.History) (*
 	return data, nil
 }
 
-func (re *histories_service) SearchHistory(search string) (*models.Histories, error) {
-	data, err := re.repo.FindHistory(search)
+func (svc *histories_service) SearchHistory(search string) (*models.Histories, error) {
+	data, err := svc.repo.FindHistory(search)
 
 	if err != nil {
 		return nil, err

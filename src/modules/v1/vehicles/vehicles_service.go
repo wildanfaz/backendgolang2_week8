@@ -13,8 +13,8 @@ func NewService(repo interfaces.VehiclesRepo) *vehicles_service {
 	return &vehicles_service{repo}
 }
 
-func (re *vehicles_service) GetAllVehicles() (*models.Vehicles, error) {
-	data, err := re.repo.FindAllVehicles()
+func (svc *vehicles_service) GetAllVehicles() (*models.Vehicles, error) {
+	data, err := svc.repo.FindAllVehicles()
 
 	if err != nil {
 		return nil, err
@@ -23,8 +23,8 @@ func (re *vehicles_service) GetAllVehicles() (*models.Vehicles, error) {
 	return data, nil
 }
 
-func (re *vehicles_service) AddVehicle(data *models.Vehicle) (*models.Vehicle, error) {
-	data, err := re.repo.SaveVehicle(data)
+func (svc *vehicles_service) AddVehicle(data *models.Vehicle) (*models.Vehicle, error) {
+	data, err := svc.repo.SaveVehicle(data)
 
 	if err != nil {
 		return nil, err
@@ -33,8 +33,8 @@ func (re *vehicles_service) AddVehicle(data *models.Vehicle) (*models.Vehicle, e
 	return data, nil
 }
 
-func (re *vehicles_service) UpdateVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
-	data, err := re.repo.ChangeVehicle(vars, data)
+func (svc *vehicles_service) UpdateVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
+	data, err := svc.repo.ChangeVehicle(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -43,8 +43,8 @@ func (re *vehicles_service) UpdateVehicle(vars string, data *models.Vehicle) (*m
 	return data, nil
 }
 
-func (re *vehicles_service) DeleteVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
-	data, err := re.repo.RemoveVehicle(vars, data)
+func (svc *vehicles_service) DeleteVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
+	data, err := svc.repo.RemoveVehicle(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -53,8 +53,8 @@ func (re *vehicles_service) DeleteVehicle(vars string, data *models.Vehicle) (*m
 	return data, nil
 }
 
-func (re *vehicles_service) SearchVehicle(search string) (*models.Vehicles, error) {
-	data, err := re.repo.FindVehicle(search)
+func (svc *vehicles_service) SearchVehicle(search string) (*models.Vehicles, error) {
+	data, err := svc.repo.FindVehicle(search)
 
 	if err != nil {
 		return nil, err
@@ -63,8 +63,8 @@ func (re *vehicles_service) SearchVehicle(search string) (*models.Vehicles, erro
 	return data, nil
 }
 
-func (re *vehicles_service) PopularVehicles() (*models.Vehicles, error) {
-	data, err := re.repo.RatingVehicles()
+func (svc *vehicles_service) PopularVehicles() (*models.Vehicles, error) {
+	data, err := svc.repo.RatingVehicles()
 
 	if err != nil {
 		return nil, err
