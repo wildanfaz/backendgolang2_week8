@@ -91,7 +91,7 @@ func (re *vehicles_repo) FindVehicle(search string) (*models.Vehicles, error) {
 func (re *vehicles_repo) RatingVehicles() (*models.Vehicles, error) {
 	var data models.Vehicles
 
-	result := re.db.Order("rating desc").Find(&data)
+	result := re.db.Order("rating desc, total_rented desc").Find(&data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed get vehicles")

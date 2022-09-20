@@ -15,7 +15,7 @@ type Vehicle struct {
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 	Rating      float32   `json:"rating,omitempty"`
-	TotalRented uint      `json:"total_rented"`
+	TotalRented int       `json:"total_rented"`
 }
 
 type Vehicles []Vehicle
