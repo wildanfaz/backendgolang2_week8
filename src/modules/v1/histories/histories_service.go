@@ -1,8 +1,6 @@
 package histories
 
 import (
-	"net/http"
-
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week8/src/interfaces"
 )
@@ -35,8 +33,8 @@ func (re *histories_service) AddHistory(data *models.History) (*models.History, 
 	return data, nil
 }
 
-func (re *histories_service) UpdateHistory(r *http.Request, data *models.History) (*models.History, error) {
-	data, err := re.repo.ChangeHistory(r, data)
+func (re *histories_service) UpdateHistory(vars string, data *models.History) (*models.History, error) {
+	data, err := re.repo.ChangeHistory(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -45,8 +43,8 @@ func (re *histories_service) UpdateHistory(r *http.Request, data *models.History
 	return data, nil
 }
 
-func (re *histories_service) DeleteHistory(r *http.Request, data *models.History) (*models.History, error) {
-	data, err := re.repo.RemoveHistory(r, data)
+func (re *histories_service) DeleteHistory(vars string, data *models.History) (*models.History, error) {
+	data, err := re.repo.RemoveHistory(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -55,8 +53,8 @@ func (re *histories_service) DeleteHistory(r *http.Request, data *models.History
 	return data, nil
 }
 
-func (re *histories_service) SearchHistory(r *http.Request) (*models.Histories, error) {
-	data, err := re.repo.FindHistory(r)
+func (re *histories_service) SearchHistory(search string) (*models.Histories, error) {
+	data, err := re.repo.FindHistory(search)
 
 	if err != nil {
 		return nil, err

@@ -1,8 +1,6 @@
 package users
 
 import (
-	"net/http"
-
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week8/src/interfaces"
 )
@@ -35,8 +33,8 @@ func (re *users_service) AddUser(data *models.User) (*models.User, error) {
 	return data, nil
 }
 
-func (re *users_service) UpdateUser(r *http.Request, data *models.User) (*models.User, error) {
-	data, err := re.repo.ChangeUser(r, data)
+func (re *users_service) UpdateUser(vars string, data *models.User) (*models.User, error) {
+	data, err := re.repo.ChangeUser(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -45,8 +43,8 @@ func (re *users_service) UpdateUser(r *http.Request, data *models.User) (*models
 	return data, nil
 }
 
-func (re *users_service) DeleteUser(r *http.Request, data *models.User) (*models.User, error) {
-	data, err := re.repo.RemoveUser(r, data)
+func (re *users_service) DeleteUser(vars string, data *models.User) (*models.User, error) {
+	data, err := re.repo.RemoveUser(vars, data)
 
 	if err != nil {
 		return nil, err

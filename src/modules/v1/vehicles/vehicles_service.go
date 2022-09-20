@@ -1,8 +1,6 @@
 package vehicles
 
 import (
-	"net/http"
-
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week8/src/interfaces"
 )
@@ -35,8 +33,8 @@ func (re *vehicles_service) AddVehicle(data *models.Vehicle) (*models.Vehicle, e
 	return data, nil
 }
 
-func (re *vehicles_service) UpdateVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error) {
-	data, err := re.repo.ChangeVehicle(r, data)
+func (re *vehicles_service) UpdateVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
+	data, err := re.repo.ChangeVehicle(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -45,8 +43,8 @@ func (re *vehicles_service) UpdateVehicle(r *http.Request, data *models.Vehicle)
 	return data, nil
 }
 
-func (re *vehicles_service) DeleteVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error) {
-	data, err := re.repo.RemoveVehicle(r, data)
+func (re *vehicles_service) DeleteVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
+	data, err := re.repo.RemoveVehicle(vars, data)
 
 	if err != nil {
 		return nil, err
@@ -55,8 +53,8 @@ func (re *vehicles_service) DeleteVehicle(r *http.Request, data *models.Vehicle)
 	return data, nil
 }
 
-func (re *vehicles_service) SearchVehicle(r *http.Request) (*models.Vehicles, error) {
-	data, err := re.repo.FindVehicle(r)
+func (re *vehicles_service) SearchVehicle(search string) (*models.Vehicles, error) {
+	data, err := re.repo.FindVehicle(search)
 
 	if err != nil {
 		return nil, err

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week8/src/helpers"
 	"github.com/wildanfaz/backendgolang2_week8/src/interfaces"
@@ -57,7 +58,8 @@ func (re *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(datas, false, w, 400, "failed update data", err)
 	} else {
-		data, err := re.svc.UpdateUser(r, &datas)
+		vars := mux.Vars(r)
+		data, err := re.svc.UpdateUser(vars["name"], &datas)
 
 		if err != nil {
 			helpers.Response(datas, false, w, 400, "failed update data", err)
@@ -72,7 +74,9 @@ func (re *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	var datas models.User
 
-	data, err := re.svc.DeleteUser(r, &datas)
+	vars := mux.Vars(r)
+
+	data, err := re.svc.DeleteUser(vars["name"], &datas)
 
 	if err != nil {
 		helpers.Response(data, false, w, 400, "failed delete data", err)

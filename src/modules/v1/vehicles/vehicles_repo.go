@@ -2,9 +2,7 @@ package vehicles
 
 import (
 	"errors"
-	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"gorm.io/gorm"
 )
@@ -39,19 +37,17 @@ func (re *vehicles_repo) SaveVehicle(data *models.Vehicle) (*models.Vehicle, err
 	return data, nil
 }
 
-func (re *vehicles_repo) ChangeVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error) {
-	vars := mux.Vars(r)
-
+func (re *vehicles_repo) ChangeVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
 	var check int64
 
-	re.db.Model(&data).Where("vehicle_id = ?", vars["vehicle_id"]).Count(&check)
+	re.db.Model(&data).Where("vehicle_id = ?", vars).Count(&check)
 	checkName := check > 0
 
 	if checkName == false {
 		return nil, errors.New("vehicle is not exists")
 	}
 
-	result := re.db.Model(&data).Where("vehicle_id = ?", vars["vehicle_id"]).Updates(data)
+	result := re.db.Model(&data).Where("vehicle_id = ?", vars).Updates(data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed update vehicle")
@@ -60,19 +56,17 @@ func (re *vehicles_repo) ChangeVehicle(r *http.Request, data *models.Vehicle) (*
 	return data, nil
 }
 
-func (re *vehicles_repo) RemoveVehicle(r *http.Request, data *models.Vehicle) (*models.Vehicle, error) {
-	vars := mux.Vars(r)
-
+func (re *vehicles_repo) RemoveVehicle(vars string, data *models.Vehicle) (*models.Vehicle, error) {
 	var check int64
 
-	re.db.Model(&data).Where("vehicle_id = ?", vars["vehicle_id"]).Count(&check)
+	re.db.Model(&data).Where("vehicle_id = ?", vars).Count(&check)
 	checkName := check > 0
 
 	if checkName == false {
 		return nil, errors.New("vehicle is not exists")
 	}
 
-	result := re.db.Delete(data, vars["vehicle_id"])
+	result := re.db.Delete(data, vars)
 
 	if result.Error != nil {
 		return nil, errors.New("failed delete vehicle")
@@ -81,15 +75,14 @@ func (re *vehicles_repo) RemoveVehicle(r *http.Request, data *models.Vehicle) (*
 	return data, nil
 }
 
-func (re *vehicles_repo) FindVehicle(r *http.Request) (*models.Vehicles, error) {
+func (re *vehicles_repo) FindVehicle(search string) (*models.Vehicles, error) {
 	var data models.Vehicles
 
-	search := r.URL.Query().Get("vehicle_name")
 	s := "%" + search + "%"
 	result := re.db.Where("LOWER(vehicle_name) LIKE ?", s).Order("created_at desc").Find(&data)
 
 	if result.Error != nil {
-		return nil, errors.New("failed get users")
+		return nil, errors.New("failed search vehicles")
 	}
 
 	return &data, nil

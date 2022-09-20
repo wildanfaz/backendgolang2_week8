@@ -2,9 +2,7 @@ package users
 
 import (
 	"errors"
-	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"gorm.io/gorm"
 )
@@ -57,7 +55,7 @@ func (re *users_repo) SaveUser(data *models.User) (*models.User, error) {
 	return data, nil
 }
 
-func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.User, error) {
+func (re *users_repo) ChangeUser(vars string, data *models.User) (*models.User, error) {
 	// var exists bool
 
 	// re.db.Raw("SELECT EXISTS (SELECT * FROM users WHERE name = ?)", data.Name).Scan(&exists)
@@ -65,11 +63,9 @@ func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.Us
 	// if exists == true {
 	// 	return nil, errors.New("name already exists")
 	// }
-	vars := mux.Vars(r)
-
 	var check int64
 
-	re.db.Model(&data).Where("name = ?", vars["name"]).Count(&check)
+	re.db.Model(&data).Where("name = ?", vars).Count(&check)
 	checkName := check > 0
 
 	if checkName == false {
@@ -85,7 +81,7 @@ func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.Us
 		return nil, errors.New("name or email already exists")
 	}
 
-	result := re.db.Model(&data).Where("name = ?", vars["name"]).Updates(data)
+	result := re.db.Model(&data).Where("name = ?", vars).Updates(data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed update data")
@@ -94,19 +90,17 @@ func (re *users_repo) ChangeUser(r *http.Request, data *models.User) (*models.Us
 	return data, nil
 }
 
-func (re *users_repo) RemoveUser(r *http.Request, data *models.User) (*models.User, error) {
-	vars := mux.Vars(r)
-
+func (re *users_repo) RemoveUser(vars string, data *models.User) (*models.User, error) {
 	var check int64
 
-	re.db.Model(&data).Where("name = ?", vars["name"]).Count(&check)
+	re.db.Model(&data).Where("name = ?", vars).Count(&check)
 	checkName := check > 0
 
 	if checkName == false {
 		return nil, errors.New("name is not exists")
 	}
 
-	result := re.db.Where("name = ?", vars["name"]).Delete(data)
+	result := re.db.Where("name = ?", vars).Delete(data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed delete data")

@@ -2,9 +2,7 @@ package histories
 
 import (
 	"errors"
-	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"gorm.io/gorm"
 )
@@ -49,19 +47,17 @@ func (re *histories_repo) SaveHistory(data *models.History) (*models.History, er
 	return data, nil
 }
 
-func (re *histories_repo) ChangeHistory(r *http.Request, data *models.History) (*models.History, error) {
-	vars := mux.Vars(r)
-
+func (re *histories_repo) ChangeHistory(vars string, data *models.History) (*models.History, error) {
 	var check int64
 
-	re.db.Model(&data).Where("history_id = ?", vars["history_id"]).Count(&check)
+	re.db.Model(&data).Where("history_id = ?", vars).Count(&check)
 	checkName := check > 0
 
 	if checkName == false {
 		return nil, errors.New("history is not exists")
 	}
 
-	result := re.db.Model(&data).Where("history_id = ?", vars["history_id"]).Updates(data)
+	result := re.db.Model(&data).Where("history_id = ?", vars).Updates(data)
 
 	if result.Error != nil {
 		return nil, errors.New("failed update history")
@@ -70,26 +66,25 @@ func (re *histories_repo) ChangeHistory(r *http.Request, data *models.History) (
 	return data, nil
 }
 
-func (re *histories_repo) RemoveHistory(r *http.Request, data *models.History) (*models.History, error) {
+func (re *histories_repo) RemoveHistory(vars string, data *models.History) (*models.History, error) {
 	var vehicle models.Vehicle
-	vars := mux.Vars(r)
 
 	var check int64
 
-	re.db.Model(&data).Where("history_id = ?", vars["history_id"]).Count(&check)
+	re.db.Model(&data).Where("history_id = ?", vars).Count(&check)
 	checkName := check > 0
 
 	if checkName == false {
 		return nil, errors.New("history is not exists")
 	}
 
-	re.db.Where("history_id = ?", vars["history_id"]).First(&data)
+	re.db.Where("history_id = ?", vars).First(&data)
 
 	re.db.Where("vehicle_id = ?", data.VehicleId).First(&vehicle)
 
 	re.db.Model(&vehicle).Where("vehicle_id = ?", data.VehicleId).Update("total_rented", vehicle.TotalRented-1)
 
-	result := re.db.Delete(data, vars["history_id"])
+	result := re.db.Delete(data, vars)
 
 	if result.Error != nil {
 		return nil, errors.New("failed delete history")
@@ -98,10 +93,8 @@ func (re *histories_repo) RemoveHistory(r *http.Request, data *models.History) (
 	return data, nil
 }
 
-func (re *histories_repo) FindHistory(r *http.Request) (*models.Histories, error) {
+func (re *histories_repo) FindHistory(search string) (*models.Histories, error) {
 	var data models.Histories
-
-	search := r.URL.Query().Get("vehicle_id")
 
 	result := re.db.Preload("Vehicle", func(db *gorm.DB) *gorm.DB {
 		return db.Select("vehicle_id, vehicle_name, created_at, updated_at, total_rented")

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week8/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week8/src/helpers"
 	"github.com/wildanfaz/backendgolang2_week8/src/interfaces"
@@ -57,7 +58,8 @@ func (re *vehicles_ctrl) UpdateVehicle(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helpers.Response(datas, false, w, 400, "failed update data", err)
 	} else {
-		data, err := re.svc.UpdateVehicle(r, &datas)
+		vars := mux.Vars(r)
+		data, err := re.svc.UpdateVehicle(vars["vehicle_id"], &datas)
 
 		if err != nil {
 			helpers.Response(data, false, w, 400, "failed update data", err)
@@ -72,7 +74,8 @@ func (re *vehicles_ctrl) DeleteVehicle(w http.ResponseWriter, r *http.Request) {
 
 	var datas models.Vehicle
 
-	data, err := re.svc.DeleteVehicle(r, &datas)
+	vars := mux.Vars(r)
+	data, err := re.svc.DeleteVehicle(vars["vehicle_id"], &datas)
 
 	if err != nil {
 		helpers.Response(data, false, w, 400, "failed delete data", err)
@@ -84,7 +87,8 @@ func (re *vehicles_ctrl) DeleteVehicle(w http.ResponseWriter, r *http.Request) {
 func (re *vehicles_ctrl) SearchVehicle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	data, err := re.svc.SearchVehicle(r)
+	search := r.URL.Query().Get("vehicle_name")
+	data, err := re.svc.SearchVehicle(search)
 
 	if err != nil {
 		helpers.Response(data, true, w, 400, "failed search data", err)
