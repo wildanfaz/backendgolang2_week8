@@ -6,20 +6,15 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/wildanfaz/backendgolang2_week8/src/routers"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
 	mainRoute, err := routers.New()
 
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	newErr := godotenv.Load(".env")
-
-	if newErr != nil {
 		log.Fatal(err)
 	}
 

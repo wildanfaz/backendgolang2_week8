@@ -3,21 +3,13 @@ package orm
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func New() (*gorm.DB, error) {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
